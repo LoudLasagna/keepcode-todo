@@ -1,11 +1,7 @@
 <template>
-  <TaskList />
+  <Main />
 </template>
 
 <script setup>
-import TaskList from "./components/TaskList.vue"
-import HelloWorld from "./components/HelloWorld.vue"
+import Main from "./views/main/index.vue";
 </script>
-
-<style scoped>
-</style>

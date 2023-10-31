@@ -11,3 +11,7 @@ export function getTasks() {
         else resolve(JSON.parse(tasks))
     })
 }
+
+export function setTasks(data) {
+    localStorage.setItem('tasks', JSON.stringify(data))
+}
