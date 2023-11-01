@@ -1,17 +1,24 @@
 <template>
   <div class="demo">
     <task-list />
-    <el-card class="card-description">
+    <el-card class="project-description">
       <template #default>
-        <div class="card-content">
-          <h1>ДОБРЫЙ ДЕН</h1>
-          <el-select v-model="store.currentUser" clearable placeholder="id пользователя задачи">
-            <el-option v-for="user in store.users" :value="user"/>
-          </el-select>
-          <p>
-            дфыыфвф
-          </p>
-        </div>
+        <h1>ДОБРЫЙ ДЕНЬ</h1>
+        <p>
+          Простое todo-листовое приложение на vue, использующее fetch api для получения списка задач, который затем сохраняется в localStorage и редактируется с использованием хранилища pinia. Promise используются при инициализации приложения для получения списка задач из localStorage (если он уже был получен) или запросом (при самом первом запуске). любое изменения списка задача сохраняется в localStorage.
+        </p>
+        <p>
+          Для оформления использована библиотека element plus (слишком сильно, сердито и отлично подходит чтобы быстро сделать макет). Pinia использовалась с целью "облегчить" зависимости детей и родителей, а так же для создания реактивных данных и методов работы с ними, которые можно использовать где угодно и их изменения будут сразу же отображены в шаблонах
+        </p>
+        <p>
+          Так же есть простая фильтрация задач по пользователям (такие штуки лучше делать на серверe)
+        </p>
+        <p>
+          Ну и, для демонстрации адаптивности, для вас есть эта карточка :)
+        </p>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ultricies lacus sed turpis tincidunt id aliquet risus. Egestas egestas fringilla phasellus faucibus scelerisque eleifend. Urna id volutpat lacus laoreet non curabitur gravida arcu. Habitant morbi tristique senectus et netus et malesuada fames ac. Tellus orci ac auctor augue. Sed velit dignissim sodales ut eu sem integer vitae justo. Aliquam malesuada bibendum arcu vitae elementum curabitur. Nullam ac tortor vitae purus faucibus ornare suspendisse sed. Elit eget gravida cum sociis. Integer malesuada nunc vel risus commodo viverra. Laoreet id donec ultrices tincidunt arcu non.
+        </p>
       </template>
     </el-card>
   </div>
@@ -19,50 +26,8 @@
 
 <script>
 import TaskList from "../../components/TaskList.vue";
-import CreateTask from "../../components/dialog/createTask.vue";
-import {useTaskStore} from "../../store/tasks.js";
 export default {
   name: 'Main',
-  components: {CreateTask, TaskList},
-  data() {
-    return {
-      store: useTaskStore()
-    }
-  }
+  components: { TaskList }
 }
 </script>
-
-<style>
-.demo {
-  display: flex;
-}
-
-.el-tab-pane {
-  height: 90vh;
-}
-.card-description {
-  margin-left: 8px;
-  width: 60%;
-  height: fit-content;
-}
-.task-list-container {
-  width: 100%;
-  max-width: 1000px;
-}
-.el-dialog {
-  max-width: 800px !important;
-}
-@media screen and (max-width: 1000px) {
-  .demo {
-    flex-direction: column-reverse;
-  }
-  .card-description {
-    margin-left: 0;
-    margin-bottom: 8px;
-    width: 100%;
-  }
-  .task-list-container {
-    width: 100%;
-  }
-}
-</style>

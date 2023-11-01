@@ -1,8 +1,8 @@
 <template>
-  <el-dialog :model-value="show" :title="store.changingTask ? 'Изменить задачу' : 'Добавить задачу'" width="80%" :before-close="closeDialog">
+  <el-dialog :model-value="show" :title="store.changingTask ? 'Изменить задачу' : 'Добавить задачу'" width="80%" :before-close="handleClose">
     <el-form label-position="top">
       <el-form-item label="id пользователя">
-        <el-select v-model="userId" clearable style="width: 100%;" placeholder="id пользователя задачи">
+        <el-select v-model="userId" style="width: 100%;" placeholder="id пользователя задачи">
           <el-option v-for="user in store.users" :value="user"/>
         </el-select>
       </el-form-item>
@@ -16,10 +16,10 @@
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button type="default" @click="closeDialog">
+      <el-button type="default" @click="handleClose">
         Отмена
       </el-button>
-      <el-button type="primary" :disabled="title.length === 0 || !userId" @click="interactWithTasks">
+      <el-button type="primary" :disabled="title.length === 0 || !userId" @click="handleConfirm">
         Подтвердить
       </el-button>
     </template>
@@ -27,32 +27,32 @@
 </template>
 
 <script>
-import {useTaskStore} from "../../store/tasks.js";
+import useTaskStore from "../../store/tasks.js";
 export default {
-  name: 'CreateTask',
+  name: 'TaskInteraction',
   props: {
     show: Boolean
   },
   data() {
     return {
       store: useTaskStore(),
-      userId: '',
+      userId: 1,
       title: '',
       completed: false
     }
   },
   watch: {
-    'store.changingTask'(val) {
-      if (val !== null) {
-        this.title = val.title
-        this.userId = val.userId
-        this.completed = val.completed
+    'store.changingTask'(newValue) {
+      if (newValue !== null) {
+        this.title = newValue.title
+        this.userId = newValue.userId
+        this.completed = newValue.completed
         this.$emit('toggle')
       }
     }
   },
   methods: {
-    interactWithTasks() {
+    handleConfirm() {
       if (this.store.changingTask !== null) {
         this.store.editTask({
           id: this.store.changingTask.id,
@@ -67,20 +67,22 @@ export default {
           completed: this.completed
         })
       }
-      this.$emit('toggle')
       this.clearForm()
+      this.$emit('toggle')
     },
-    closeDialog() {
-      if (this.store.changingTask !== null) {
-        this.store.changingTask = null
-      }
-      this.$emit('toggle')
+    // показ диалогового окна зависит от пропа только потому что его открытие висит на кнопке рядом с вкладками в родительском компоненте
+    handleClose() {
       this.clearForm()
+      this.$emit('toggle')
     },
     clearForm() {
-      this.title = ''
-      this.userId = ''
-      this.completed = false
+      //таймаут для того, чтобы пользователь не видел очистку полей формы
+      setTimeout(() => {
+        if (this.store.changingTask !== null) this.store.changingTask = null
+        this.title = ''
+        this.userId = ''
+        this.completed = false
+      }, 200)
     }
   }
 }
