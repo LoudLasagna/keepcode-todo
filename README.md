@@ -8,6 +8,8 @@
 сильнее всего тормозит как раз element-plus, жаль
 
 ## Project setup
+
+### Installing dependencies
 ```
 npm install
 ```
