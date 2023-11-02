@@ -54,18 +54,18 @@ export default {
   methods: {
     handleConfirm() {
       if (this.store.changingTask !== null) {
-        this.store.editTask({
+        this.store.taskAction({
           id: this.store.changingTask.id,
           userId: this.userId,
           title: this.title,
           completed: this.completed
-        })
+        }, 'edit')
       } else {
-        this.store.createTask({
+        this.store.taskAction({
           userId: this.userId,
           title: this.title,
           completed: this.completed
-        })
+        }, 'create')
       }
       this.clearForm()
       this.$emit('toggle')

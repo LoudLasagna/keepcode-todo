@@ -15,28 +15,27 @@ const useTaskStore = defineStore('tasks', {
     users: (state) => new Set(state.tasks.map((elem) => elem.userId))
   },
   actions: {
-    toggleTask(id) {
-      const i = this.tasks.findIndex((elem) => elem.id === id)
-      this.tasks[i].completed = !this.tasks[i].completed
-      setTasks(this.tasks)
-    },
-    deleteTask(id) {
-      const i = this.tasks.findIndex((elem) => elem.id === id)
-      this.tasks.splice(i, 1)
-      setTasks(this.tasks)
-    },
-    editTask(data) {
-      const i = this.tasks.findIndex((elem) => elem.id === data.id)
-      this.tasks[i] = data
-      setTasks(this.tasks)
-    },
-    createTask(data) {
-      this.tasks.unshift({
-        userId: data.userId || 1,
-        id: this.tasks[this.tasks.length - 1].id + 1,
-        title: data.title,
-        completed: data.completed
-      })
+    taskAction(data, action) {
+      const i = this.tasks.findIndex((elem) => elem.id === data)
+      switch (action) {
+        case 'toggle':
+          this.tasks[i].completed = !this.tasks[i].completed
+          break
+        case 'delete':
+          this.tasks.splice(i, 1)
+          break
+        case 'edit':
+          this.tasks[this.tasks.findIndex((elem) => elem.id === data.id)] = data
+          break
+        case 'create':
+          this.tasks.push({
+            id: this.tasks.length + 1,
+            userId: data.userId,
+            title: data.title,
+            completed: data.completed
+          })
+          break
+      }
       setTasks(this.tasks)
     }
   }

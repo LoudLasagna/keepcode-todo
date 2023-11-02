@@ -2,7 +2,12 @@
   <el-card class="task-card">
     <template #default>
       <div class="content">
-        <span class="title">{{ task.title }}</span>
+        <span class="title">
+          <span style="font-weight: bold">
+            {{ task.userId }} |
+          </span>
+          {{ task.title }}
+        </span>
         <div class="controls">
           <el-tooltip :content="task.completed ? 'Начать заново' : 'Завершить задачу'" effect="light" placement="top">
             <template #default>
@@ -51,7 +56,7 @@ export default {
   },
   methods: {
     handleToggle() {
-      this.store.toggleTask(this.task.id)
+      this.store.taskAction(this.task.id, 'toggle')
     },
     handleEdit() {
       this.store.changingTask = {...this.task}
@@ -65,7 +70,7 @@ export default {
           cancelButtonText: 'Отмена'
         }
       ).then(() => {
-        this.store.deleteTask(this.task.id)
+        this.store.taskAction(this.task.id, 'delete')
       }).catch(() => {})
     }
   }

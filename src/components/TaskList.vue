@@ -43,13 +43,13 @@
     },
     computed: {
       incompletedTasks() {
-        const returnValue = this.store.filteredTasks(false)
+        const returnValue = this.store.filteredTasks(false).reverse()
         if (this.currentUser.length === 0) return returnValue
         // функция с циклом вместо .filter потому что это немного быстрее
         else return filter((elem) => elem.userId === this.currentUser, returnValue)
       },
       completedTasks() {
-        const returnValue = this.store.filteredTasks(true)
+        const returnValue = this.store.filteredTasks(true).reverse()
         if (this.currentUser.length === 0) return returnValue
         // функция с циклом вместо .filter потому что это немного быстрее
         else return filter((elem) => elem.userId === this.currentUser, returnValue)
