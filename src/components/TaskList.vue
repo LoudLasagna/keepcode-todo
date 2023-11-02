@@ -3,6 +3,14 @@
     <el-select v-model="currentUser" clearable placeholder="id пользователя задачи" style="width: 100%; margin-bottom: 15px">
       <el-option v-for="user in users" :value="user"/>
     </el-select>
+    <el-tab-pane v-loading="loading" label="Все" name="all">
+      <template v-if="allTasks.length > 0">
+        <task-card v-for="task in allTasks" :key="task.id" :task="task"/>
+      </template>
+      <el-card v-else>
+        Пусто!
+      </el-card>
+    </el-tab-pane>
     <el-tab-pane v-loading="loading" label="Не выполненные" name="incompleted">
       <template v-if="incompletedTasks.length > 0">
         <task-card v-for="task in incompletedTasks" :key="task.id" :task="task"/>
@@ -34,7 +42,7 @@
     components: { TaskInteractions, TaskCard },
     data() {
       return {
-        activeTab: 'incompleted',
+        activeTab: 'all',
         store: useTaskStore(),
         loading: true,
         showDialog: false,
@@ -43,17 +51,15 @@
       }
     },
     computed: {
+      allTasks() {
+        const returnValue = this.store.tasks.reverse()
+        return this.currentUser.length === 0 ? returnValue : filter((elem) => elem.userId === this.currentUser, returnValue)
+      },
       incompletedTasks() {
-        const returnValue = this.store.filteredTasks(false).reverse()
-        if (this.currentUser.length === 0) return returnValue
-        // функция с циклом вместо .filter потому что это немного быстрее
-        else return filter((elem) => elem.userId === this.currentUser, returnValue)
+        return filter(elem => elem.completed === false, this.allTasks)
       },
       completedTasks() {
-        const returnValue = this.store.filteredTasks(true).reverse()
-        if (this.currentUser.length === 0) return returnValue
-        // функция с циклом вместо .filter потому что это немного быстрее
-        else return filter((elem) => elem.userId === this.currentUser, returnValue)
+        return filter(elem => elem.completed === true, this.allTasks)
       }
     },
     mounted() {

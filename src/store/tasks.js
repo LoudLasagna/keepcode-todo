@@ -1,18 +1,11 @@
 import { defineStore } from "pinia";
 import { setTasks } from "../utils/localStorage.js";
-import { filter } from "../utils/utils.js";
 
 const useTaskStore = defineStore('tasks', {
   state: () => ({
     tasks: [],
     changingTask: null
   }),
-  getters: {
-    filteredTasks: (state) => completed => {
-      // функция с циклом вместо .filter потому что это немного быстрее
-      return filter(elem => elem.completed === completed, state.tasks)
-    }
-  },
   actions: {
     taskAction(data, action) {
       const i = this.tasks.findIndex((elem) => elem.id === data)
