@@ -38,7 +38,8 @@
         store: useTaskStore(),
         loading: true,
         showDialog: false,
-        currentUser: ''
+        currentUser: '',
+        users: []
       }
     },
     computed: {
@@ -53,13 +54,13 @@
         if (this.currentUser.length === 0) return returnValue
         // функция с циклом вместо .filter потому что это немного быстрее
         else return filter((elem) => elem.userId === this.currentUser, returnValue)
-      },
-      users() { return this.store.users }
+      }
     },
     mounted() {
       // заполнение хранилища pinia при запуске приложения
       getTasks().then((tasks) => {
         this.store.tasks = tasks
+        this.users = new Set(tasks.map((elem) => elem.userId))
         this.loading = false
       })
     }

@@ -11,8 +11,7 @@ const useTaskStore = defineStore('tasks', {
     filteredTasks: (state) => completed => {
       // функция с циклом вместо .filter потому что это немного быстрее
       return filter(elem => elem.completed === completed, state.tasks)
-    },
-    users: (state) => new Set(state.tasks.map((elem) => elem.userId))
+    }
   },
   actions: {
     taskAction(data, action) {
@@ -29,8 +28,8 @@ const useTaskStore = defineStore('tasks', {
           break
         case 'create':
           this.tasks.push({
-            id: this.tasks.length + 1,
             userId: data.userId,
+            id: this.tasks[this.tasks.length - 1].id + 1,
             title: data.title,
             completed: data.completed
           })
