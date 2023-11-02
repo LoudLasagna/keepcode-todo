@@ -52,7 +52,7 @@
     },
     computed: {
       allTasks() {
-        const returnValue = this.store.tasks.reverse()
+        const returnValue = this.store.tasks.slice().reverse()
         return this.currentUser.length === 0 ? returnValue : filter((elem) => elem.userId === this.currentUser, returnValue)
       },
       incompletedTasks() {
