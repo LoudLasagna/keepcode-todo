@@ -3,7 +3,7 @@
     <el-form label-position="top">
       <el-form-item label="id пользователя">
         <el-select v-model="userId" style="width: 100%;" placeholder="id пользователя задачи">
-          <el-option v-for="user in store.users" :value="user"/>
+          <el-option v-for="user in store.getUsers" :value="user"/>
         </el-select>
       </el-form-item>
       <el-form-item label="Заголовок">

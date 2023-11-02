@@ -1,7 +1,7 @@
 <template>
   <el-tabs v-model="activeTab" type="border-card" class="task-list-container" addable @tab-add="showDialog = true">
     <el-select v-model="currentUser" clearable placeholder="id пользователя задачи" style="width: 100%; margin-bottom: 15px">
-      <el-option v-for="user in users" :value="user"/>
+      <el-option v-for="user in store.getUsers" :value="user"/>
     </el-select>
     <el-tab-pane v-loading="loading" label="Все" name="all">
       <template v-if="allTasks.length > 0">
@@ -46,13 +46,12 @@
         store: useTaskStore(),
         loading: true,
         showDialog: false,
-        currentUser: '',
-        users: []
+        currentUser: ''
       }
     },
     computed: {
       allTasks() {
-        const returnValue = this.store.tasks.slice().reverse()
+        const returnValue = this.store.getTasks
         return this.currentUser.length === 0 ? returnValue : filter((elem) => elem.userId === this.currentUser, returnValue)
       },
       incompletedTasks() {
@@ -66,7 +65,6 @@
       // заполнение хранилища pinia при запуске приложения
       getTasks().then((tasks) => {
         this.store.tasks = tasks
-        this.users = new Set(tasks.map((elem) => elem.userId))
         this.loading = false
       })
     }
